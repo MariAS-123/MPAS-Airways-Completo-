@@ -1,0 +1,72 @@
+syntax = "proto3";
+
+option csharp_namespace = "Microservicio.Vuelos.Grpc";
+
+package vuelos;
+
+service VuelosGrpc {
+    rpc GetVuelo           (GetVueloRequest)        returns (VueloGrpcResponse);
+    rpc ValidarVuelo       (GetVueloRequest)        returns (VueloGrpcResponse);
+    rpc GetAsientosByVuelo (GetVueloRequest)        returns (AsientosGrpcResponse);
+    rpc ValidarAsiento     (ValidarAsientoRequest)  returns (AsientoGrpcResponse);
+    rpc BloquearAsiento    (BloquearAsientoRequest) returns (AsientoGrpcResponse);
+    rpc LiberarAsiento     (LiberarAsientoRequest)  returns (AsientoGrpcResponse);
+}
+
+message GetVueloRequest {
+    int32 id_vuelo = 1;
+}
+
+message ValidarAsientoRequest {
+    int32 id_vuelo   = 1;
+    int32 id_asiento = 2;
+}
+
+message BloquearAsientoRequest {
+    int32  id_vuelo         = 1;
+    int32  id_asiento       = 2;
+    string modificado_por   = 3;
+}
+
+message LiberarAsientoRequest {
+    int32  id_vuelo         = 1;
+    int32  id_asiento       = 2;
+    string modificado_por   = 3;
+}
+
+message VueloGrpcResponse {
+    bool   success                  = 1;
+    string message                  = 2;
+    int32  id_vuelo                 = 3;
+    string numero_vuelo             = 4;
+    int32  id_aeropuerto_origen     = 5;
+    int32  id_aeropuerto_destino    = 6;
+    string fecha_hora_salida        = 7;
+    string fecha_hora_llegada       = 8;
+    int32  duracion_min             = 9;
+    double precio_base              = 10;
+    int32  capacidad_total          = 11;
+    string estado_vuelo             = 12;
+    string estado                   = 13;
+    bool   eliminado                = 14;
+}
+
+message AsientoGrpcResponse {
+    bool   success        = 1;
+    string message        = 2;
+    int32  id_asiento     = 3;
+    int32  id_vuelo       = 4;
+    string numero_asiento = 5;
+    string clase          = 6;
+    bool   disponible     = 7;
+    double precio_extra   = 8;
+    string posicion       = 9;
+    string estado         = 10;
+    bool   eliminado      = 11;
+}
+
+message AsientosGrpcResponse {
+    bool   success  = 1;
+    string message  = 2;
+    repeated AsientoGrpcResponse asientos = 3;
+}

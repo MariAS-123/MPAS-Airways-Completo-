@@ -1,0 +1,73 @@
+﻿using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Microservicio.Clientes.Api.Models.Settings;
+
+namespace Microservicio.Clientes.Api.Extensions;
+
+public static class AuthenticationExtensions
+{
+    public static IServiceCollection AddJwtAuthentication(
+        this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        services.Configure<JwtSettings>(
+            configuration.GetSection(JwtSettings.SectionName));
+
+        var jwtSettings = configuration
+            .GetSection(JwtSettings.SectionName)
+            .Get<JwtSettings>();
+
+        if (jwtSettings is null)
+            throw new InvalidOperationException("La configuración JwtSettings no existe o es inválida.");
+
+        // ✅ Secret en lugar de SecretKey
+        if (string.IsNullOrWhiteSpace(jwtSettings.Secret))
+            throw new InvalidOperationException("JwtSettings.Secret es obligatoria.");
+
+        if (string.IsNullOrWhiteSpace(jwtSettings.Issuer))
+            throw new InvalidOperationException("JwtSettings.Issuer es obligatoria.");
+
+        if (string.IsNullOrWhiteSpace(jwtSettings.Audience))
+            throw new InvalidOperationException("JwtSettings.Audience es obligatoria.");
+
+        if (jwtSettings.ExpirationMinutes <= 0)
+            throw new InvalidOperationException("JwtSettings.ExpirationMinutes debe ser mayor a cero.");
+
+        // ✅ Secret en lugar de SecretKey
+        var key = Encoding.UTF8.GetBytes(jwtSettings.Secret);
+
+        services
+            .AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.RequireHttpsMetadata = false;
+                options.SaveToken = true;
+                options.MapInboundClaims = false;
+
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = true,
+                    ValidIssuer = jwtSettings.Issuer,
+                    ValidateAudience = true,
+                    ValidAudience = jwtSettings.Audience,
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero,
+                    RoleClaimType = System.Security.Claims.ClaimTypes.Role,
+                    NameClaimType = System.Security.Claims.ClaimTypes.Name
+                };
+
+                // ✅ Sin OnTokenValidated ni ITokenBlacklistService
+                // — ese patrón es exclusivo del MS Seguridad
+            });
+
+        return services;
+    }
+}

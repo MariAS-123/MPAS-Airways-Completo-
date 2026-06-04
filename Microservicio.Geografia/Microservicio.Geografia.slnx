@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="Microservicio.Geografia.Api/Microservicio.Geografia.Api.csproj" />
+    <Project Path="Microservicio.Geografia.Business/Microservicio.Geografia.Business.csproj" />
+    <Project Path="Microservicio.Geografia.DataAccess/Microservicio.Geografia.DataAccess.csproj" />
+    <Project Path="Microservicio.Geografia.DataManagement/Microservicio.Geografia.DataManagement.csproj" />
+  </Folder>
+</Solution>

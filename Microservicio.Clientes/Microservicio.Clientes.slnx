@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="Microservicio.Clientes.Api/Microservicio.Clientes.Api.csproj" />
+    <Project Path="Microservicio.Clientes.Business/Microservicio.Clientes.Business.csproj" />
+    <Project Path="Microservicio.Clientes.DataAccess/Microservicio.Clientes.DataAccess.csproj" />
+    <Project Path="Microservicio.Clientes.DataManagement/Microservicio.Clientes.DataManagement.csproj" />
+  </Folder>
+</Solution>

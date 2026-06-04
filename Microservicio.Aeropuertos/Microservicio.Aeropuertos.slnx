@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="Microservicio.Aeropuertos.Api/Microservicio.Aeropuertos.Api.csproj" />
+    <Project Path="Microservicio.Aeropuertos.Business/Microservicio.Aeropuertos.Business.csproj" />
+    <Project Path="Microservicio.Aeropuertos.DataAccess/Microservicio.Aeropuertos.DataAccess.csproj" />
+    <Project Path="Microservicio.Aeropuertos.DataManagement/Microservicio.Aeropuertos.DataManagement.csproj" />
+  </Folder>
+</Solution>

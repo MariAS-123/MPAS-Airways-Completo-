@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="Microservicio.Seguridad.Api/Microservicio.Seguridad.Api.csproj" />
+    <Project Path="Microservicio.Seguridad.Business/Microservicio.Seguridad.Business.csproj" />
+    <Project Path="Microservicio.Seguridad.DataAccess/Microservicio.Seguridad.DataAccess.csproj" />
+    <Project Path="Microservicio.Seguridad.DataManagement/Microservicio.Seguridad.DataManagement.csproj" />
+  </Folder>
+</Solution>
