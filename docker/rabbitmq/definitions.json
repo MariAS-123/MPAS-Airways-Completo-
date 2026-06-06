@@ -1,0 +1,216 @@
+{
+  "rabbit_version": "3.13.0",
+  "vhosts": [
+    { "name": "vuelos-marketplace" }
+  ],
+  "permissions": [
+    {
+      "user": "marketplace",
+      "vhost": "vuelos-marketplace",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    }
+  ],
+  "exchanges": [
+    {
+      "name": "vuelos.marketplace.events",
+      "vhost": "vuelos-marketplace",
+      "type": "topic",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    },
+    {
+      "name": "vuelos.marketplace.dlx",
+      "vhost": "vuelos-marketplace",
+      "type": "topic",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    }
+  ],
+  "queues": [
+    {
+      "name": "reservas.vuelo-seleccionado.queue",
+      "vhost": "vuelos-marketplace",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "vuelos.marketplace.dlx",
+        "x-dead-letter-routing-key": "dlq.vuelo.seleccionado"
+      }
+    },
+    {
+      "name": "reservas.pasajeros-registrados.queue",
+      "vhost": "vuelos-marketplace",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "vuelos.marketplace.dlx",
+        "x-dead-letter-routing-key": "dlq.pasajeros.registrados"
+      }
+    },
+    {
+      "name": "reservas.reserva-solicitada.queue",
+      "vhost": "vuelos-marketplace",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "vuelos.marketplace.dlx",
+        "x-dead-letter-routing-key": "dlq.reserva.solicitada"
+      }
+    },
+    {
+      "name": "vuelos.boleto-emitido.queue",
+      "vhost": "vuelos-marketplace",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "vuelos.marketplace.dlx",
+        "x-dead-letter-routing-key": "dlq.boleto.emitido"
+      }
+    },
+    {
+      "name": "reservas.reserva-creada.queue",
+      "vhost": "vuelos-marketplace",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
+    },
+    {
+      "name": "reservas.pasajeros-validados.queue",
+      "vhost": "vuelos-marketplace",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
+    },
+    {
+      "name": "reservas.asiento-pre-reservado.queue",
+      "vhost": "vuelos-marketplace",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
+    },
+    {
+      "name": "dlq.vuelo-seleccionado",
+      "vhost": "vuelos-marketplace",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
+    },
+    {
+      "name": "dlq.pasajeros-registrados",
+      "vhost": "vuelos-marketplace",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
+    },
+    {
+      "name": "dlq.reserva-solicitada",
+      "vhost": "vuelos-marketplace",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
+    },
+    {
+      "name": "dlq.boleto-emitido",
+      "vhost": "vuelos-marketplace",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
+    }
+  ],
+  "bindings": [
+    {
+      "source": "vuelos.marketplace.events",
+      "vhost": "vuelos-marketplace",
+      "destination": "reservas.vuelo-seleccionado.queue",
+      "destination_type": "queue",
+      "routing_key": "marketplace.vuelo.seleccionado",
+      "arguments": {}
+    },
+    {
+      "source": "vuelos.marketplace.events",
+      "vhost": "vuelos-marketplace",
+      "destination": "reservas.pasajeros-registrados.queue",
+      "destination_type": "queue",
+      "routing_key": "marketplace.pasajeros.registrados",
+      "arguments": {}
+    },
+    {
+      "source": "vuelos.marketplace.events",
+      "vhost": "vuelos-marketplace",
+      "destination": "reservas.reserva-solicitada.queue",
+      "destination_type": "queue",
+      "routing_key": "marketplace.reserva.solicitada",
+      "arguments": {}
+    },
+    {
+      "source": "vuelos.marketplace.events",
+      "vhost": "vuelos-marketplace",
+      "destination": "vuelos.boleto-emitido.queue",
+      "destination_type": "queue",
+      "routing_key": "marketplace.boleto.emitido",
+      "arguments": {}
+    },
+    {
+      "source": "vuelos.marketplace.events",
+      "vhost": "vuelos-marketplace",
+      "destination": "reservas.reserva-creada.queue",
+      "destination_type": "queue",
+      "routing_key": "marketplace.reserva.creada",
+      "arguments": {}
+    },
+    {
+      "source": "vuelos.marketplace.events",
+      "vhost": "vuelos-marketplace",
+      "destination": "reservas.pasajeros-validados.queue",
+      "destination_type": "queue",
+      "routing_key": "marketplace.pasajeros.validados",
+      "arguments": {}
+    },
+    {
+      "source": "vuelos.marketplace.events",
+      "vhost": "vuelos-marketplace",
+      "destination": "reservas.asiento-pre-reservado.queue",
+      "destination_type": "queue",
+      "routing_key": "marketplace.asiento.pre-reservado",
+      "arguments": {}
+    },
+    {
+      "source": "vuelos.marketplace.dlx",
+      "vhost": "vuelos-marketplace",
+      "destination": "dlq.vuelo-seleccionado",
+      "destination_type": "queue",
+      "routing_key": "dlq.vuelo.seleccionado",
+      "arguments": {}
+    },
+    {
+      "source": "vuelos.marketplace.dlx",
+      "vhost": "vuelos-marketplace",
+      "destination": "dlq.pasajeros-registrados",
+      "destination_type": "queue",
+      "routing_key": "dlq.pasajeros.registrados",
+      "arguments": {}
+    },
+    {
+      "source": "vuelos.marketplace.dlx",
+      "vhost": "vuelos-marketplace",
+      "destination": "dlq.reserva-solicitada",
+      "destination_type": "queue",
+      "routing_key": "dlq.reserva.solicitada",
+      "arguments": {}
+    },
+    {
+      "source": "vuelos.marketplace.dlx",
+      "vhost": "vuelos-marketplace",
+      "destination": "dlq.boleto-emitido",
+      "destination_type": "queue",
+      "routing_key": "dlq.boleto.emitido",
+      "arguments": {}
+    }
+  ]
+}

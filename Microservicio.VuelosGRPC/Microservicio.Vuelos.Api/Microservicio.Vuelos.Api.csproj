@@ -27,6 +27,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.1" />
+    <PackageReference Include="RabbitMQ.Client" Version="7.2.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
@@ -34,6 +35,7 @@
     <ProjectReference Include="..\Microservicio.Vuelos.Business\Microservicio.Vuelos.Business.csproj" />
     <ProjectReference Include="..\Microservicio.Vuelos.DataAccess\Microservicio.Vuelos.DataAccess.csproj" />
     <ProjectReference Include="..\Microservicio.Vuelos.DataManagement\Microservicio.Vuelos.DataManagement.csproj" />
+    <ProjectReference Include="..\..\Marketplace.Events.Contracts\Marketplace.Events.Contracts.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,12 @@
+C:\Users\maria\Desktop\6to\Integracion de Sistemas\RDA 2 Mari Backup Vuelos Completo\Marketplace.Events.Contracts\bin\Debug\net10.0\Marketplace.Events.Contracts.deps.json
+C:\Users\maria\Desktop\6to\Integracion de Sistemas\RDA 2 Mari Backup Vuelos Completo\Marketplace.Events.Contracts\bin\Debug\net10.0\Marketplace.Events.Contracts.dll
+C:\Users\maria\Desktop\6to\Integracion de Sistemas\RDA 2 Mari Backup Vuelos Completo\Marketplace.Events.Contracts\bin\Debug\net10.0\Marketplace.Events.Contracts.pdb
+C:\Users\maria\Desktop\6to\Integracion de Sistemas\RDA 2 Mari Backup Vuelos Completo\Marketplace.Events.Contracts\obj\Debug\net10.0\Marketplace.Events.Contracts.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\maria\Desktop\6to\Integracion de Sistemas\RDA 2 Mari Backup Vuelos Completo\Marketplace.Events.Contracts\obj\Debug\net10.0\Marketplace.Events.Contracts.AssemblyInfoInputs.cache
+C:\Users\maria\Desktop\6to\Integracion de Sistemas\RDA 2 Mari Backup Vuelos Completo\Marketplace.Events.Contracts\obj\Debug\net10.0\Marketplace.Events.Contracts.AssemblyInfo.cs
+C:\Users\maria\Desktop\6to\Integracion de Sistemas\RDA 2 Mari Backup Vuelos Completo\Marketplace.Events.Contracts\obj\Debug\net10.0\Marketplace.Events.Contracts.csproj.CoreCompileInputs.cache
+C:\Users\maria\Desktop\6to\Integracion de Sistemas\RDA 2 Mari Backup Vuelos Completo\Marketplace.Events.Contracts\obj\Debug\net10.0\Marketplace.Events.Contracts.sourcelink.json
+C:\Users\maria\Desktop\6to\Integracion de Sistemas\RDA 2 Mari Backup Vuelos Completo\Marketplace.Events.Contracts\obj\Debug\net10.0\Marketplace.Events.Contracts.dll
+C:\Users\maria\Desktop\6to\Integracion de Sistemas\RDA 2 Mari Backup Vuelos Completo\Marketplace.Events.Contracts\obj\Debug\net10.0\refint\Marketplace.Events.Contracts.dll
+C:\Users\maria\Desktop\6to\Integracion de Sistemas\RDA 2 Mari Backup Vuelos Completo\Marketplace.Events.Contracts\obj\Debug\net10.0\Marketplace.Events.Contracts.pdb
+C:\Users\maria\Desktop\6to\Integracion de Sistemas\RDA 2 Mari Backup Vuelos Completo\Marketplace.Events.Contracts\obj\Debug\net10.0\ref\Marketplace.Events.Contracts.dll

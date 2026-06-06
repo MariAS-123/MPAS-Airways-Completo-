@@ -1,4 +1,5 @@
 using Microservicio.Clientes.Api.Extensions;
+using Microservicio.Clientes.Api.Messaging;
 using Microservicio.Clientes.Api.Middleware;
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
@@ -45,6 +46,9 @@ builder.Services.AddSwaggerDocumentation();
 // DbContext + Repositories + DataManagement + Business + Integrations
 // ============================================================
 builder.Services.AddProjectServices(builder.Configuration);
+
+// Marketplace messaging (Reto 3) — capa adicional; REST sin cambios
+builder.Services.AddMarketplaceMessaging(builder.Configuration);
 
 // ============================================================
 // AUTHORIZATION

@@ -1,4 +1,5 @@
 using Microservicio.ReservasF.Api.Extensions;
+using Microservicio.ReservasF.Api.Messaging;
 using Microservicio.ReservasF.Api.Middleware;
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 var builder = WebApplication.CreateBuilder(args);
@@ -29,6 +30,9 @@ builder.Services.AddSwaggerDocumentation();
 
 // Project services: DbContext + DataManagement + Business + Integrations
 builder.Services.AddProjectServices(builder.Configuration);
+
+// Marketplace messaging (Reto 3) — capa adicional; REST sin cambios
+builder.Services.AddMarketplaceMessaging(builder.Configuration);
 
 // Authorization
 builder.Services.AddAuthorization();

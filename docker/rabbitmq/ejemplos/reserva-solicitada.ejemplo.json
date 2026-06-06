@@ -1,0 +1,23 @@
+{
+  "messageId": "33333333-aaaa-bbbb-cccc-000000000003",
+  "correlationId": "99999999-9999-9999-9999-999999999999",
+  "occurredAtUtc": "2026-06-06T23:02:00Z",
+  "schemaVersion": "1.0",
+  "idCliente": 3,
+  "idVuelo": 27,
+  "subtotalReserva": 100.0,
+  "valorIva": 15.0,
+  "totalReserva": 115.0,
+  "cargoServicio": 5.0,
+  "origenCanalReserva": "APP",
+  "creadoPorUsuario": "marketplace-gateway",
+  "detalles": [
+    {
+      "idPasajero": 3,
+      "idAsiento": 4369,
+      "subtotalLinea": 100.0,
+      "valorIvaLinea": 15.0,
+      "totalLinea": 115.0
+    }
+  ]
+}

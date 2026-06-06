@@ -1,0 +1,9 @@
+{
+  "messageId": "22222222-aaaa-bbbb-cccc-000000000002",
+  "correlationId": "99999999-9999-9999-9999-999999999999",
+  "occurredAtUtc": "2026-06-06T23:01:00Z",
+  "schemaVersion": "1.0",
+  "idCliente": 3,
+  "idVuelo": 27,
+  "idAsiento": 4369
+}

@@ -1,5 +1,6 @@
 using Microservicio.Vuelos.Api.Extensions;
 using Microservicio.Vuelos.Api.GrpcServices;
+using Microservicio.Vuelos.Api.Messaging;
 using Microservicio.Vuelos.Api.Middleware;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Grpc.AspNetCore.Web;
@@ -47,6 +48,9 @@ builder.Services.AddSwaggerDocumentation();
 
 // DbContext + Repositories + DataServices + BusinessServices + HttpClients
 builder.Services.AddProjectServices(builder.Configuration);
+
+// Marketplace messaging (Reto 3) — capa adicional; REST/gRPC sin cambios
+builder.Services.AddMarketplaceMessaging(builder.Configuration);
 
 // Authorization
 builder.Services.AddAuthorization();

@@ -27,14 +27,26 @@ public class ClienteIntegrationService : IClienteIntegrationService
         _httpClient.BaseAddress = new Uri(baseUrl);
     }
 
+    private string? ResolveBearerToken()
+    {
+        var authorization = _httpContextAccessor.HttpContext?
+            .Request.Headers.Authorization.ToString();
+
+        if (!string.IsNullOrWhiteSpace(authorization))
+        {
+            return authorization.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase)
+                ? authorization["Bearer ".Length..].Trim()
+                : authorization.Trim();
+        }
+
+        return _configuration["Integrations:Clientes:ServiceToken"];
+    }
+
     public async Task<ClienteIntegrationDto?> GetClienteAsync(
         int idCliente,
         CancellationToken cancellationToken = default)
     {
-        // ✅ Agregar el token del contexto HTTP
-        var token = _httpContextAccessor.HttpContext?
-            .Request.Headers["Authorization"]
-            .ToString().Replace("Bearer ", "");
+        var token = ResolveBearerToken();
 
         var request = new HttpRequestMessage(HttpMethod.Get, $"api/v1/clientes/{idCliente}");
 
@@ -59,9 +71,7 @@ public class ClienteIntegrationService : IClienteIntegrationService
         int idPasajero,
         CancellationToken cancellationToken = default)
     {
-        var token = _httpContextAccessor.HttpContext?
-            .Request.Headers["Authorization"]
-            .ToString().Replace("Bearer ", "");
+        var token = ResolveBearerToken();
 
         var request = new HttpRequestMessage(HttpMethod.Get, $"api/v1/pasajeros/{idPasajero}");
 

@@ -1,0 +1,17 @@
+{
+  "messageId": "11111111-aaaa-bbbb-cccc-000000000001",
+  "correlationId": "99999999-9999-9999-9999-999999999999",
+  "occurredAtUtc": "2026-06-06T23:00:00Z",
+  "schemaVersion": "1.0",
+  "idCliente": 3,
+  "pasajeros": [
+    {
+      "idPasajero": 3,
+      "idCliente": 3,
+      "nombrePasajero": "Mari",
+      "apellidoPasajero": "Astudillo",
+      "tipoDocumentoPasajero": "CI",
+      "numeroDocumentoPasajero": "1234567890"
+    }
+  ]
+}
