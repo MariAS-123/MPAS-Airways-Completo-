@@ -1,7 +1,8 @@
 {
   "version": 3,
   "targets": {
-    "net10.0": {}
+    "net10.0": {},
+    "net10.0/linux-x64": {}
   },
   "libraries": {},
   "projectFileDependencyGroups": {
@@ -37,6 +38,7 @@
       },
       "frameworks": {
         "net10.0": {
+          "framework": "net10.0",
           "targetAlias": "net10.0",
           "projectReferences": {}
         }
@@ -55,6 +57,7 @@
     },
     "frameworks": {
       "net10.0": {
+        "framework": "net10.0",
         "targetAlias": "net10.0",
         "imports": [
           "net461",
@@ -347,6 +350,11 @@
           "System.Xml.XPath": "(,4.3.32767]",
           "System.Xml.XPath.XDocument": "(,5.0.32767]"
         }
+      }
+    },
+    "runtimes": {
+      "linux-x64": {
+        "#import": []
       }
     }
   }

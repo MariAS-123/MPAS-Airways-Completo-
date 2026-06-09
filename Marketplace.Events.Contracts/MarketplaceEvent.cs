@@ -18,4 +18,9 @@ public abstract record MarketplaceEvent
     /// Versión del contrato para evolucionar payloads sin romper consumidores.
     /// </summary>
     public string SchemaVersion { get; init; } = MarketplaceEventSchema.CurrentVersion;
+
+    /// <summary>
+    /// JWT del usuario marketplace (Gateway → MS). Permite llamadas HTTP internas sin HttpContext.
+    /// </summary>
+    public string? AccessToken { get; init; }
 }

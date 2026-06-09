@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
+using Microservicio.ReservasF.Api.Messaging;
 using Microservicio.ReservasF.Business.Integrations;
 using Microservicio.ReservasF.Business.Integrations.Interfaces;
 
@@ -10,15 +11,18 @@ public class ClienteIntegrationService : IClienteIntegrationService
     private readonly HttpClient _httpClient;
     private readonly IConfiguration _configuration;
     private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IMessagingAccessTokenAccessor _messagingAccessTokenAccessor;
 
     public ClienteIntegrationService(
         HttpClient httpClient,
         IConfiguration configuration,
-    IHttpContextAccessor httpContextAccessor)
+        IHttpContextAccessor httpContextAccessor,
+        IMessagingAccessTokenAccessor messagingAccessTokenAccessor)
     {
         _httpClient = httpClient;
         _configuration = configuration;
         _httpContextAccessor = httpContextAccessor;
+        _messagingAccessTokenAccessor = messagingAccessTokenAccessor;
         var baseUrl = _configuration["Integrations:Clientes:BaseUrl"];
 
         if (string.IsNullOrWhiteSpace(baseUrl))
@@ -38,6 +42,9 @@ public class ClienteIntegrationService : IClienteIntegrationService
                 ? authorization["Bearer ".Length..].Trim()
                 : authorization.Trim();
         }
+
+        if (!string.IsNullOrWhiteSpace(_messagingAccessTokenAccessor.Token))
+            return _messagingAccessTokenAccessor.Token;
 
         return _configuration["Integrations:Clientes:ServiceToken"];
     }

@@ -13,6 +13,7 @@ public static class MessagingServiceCollectionExtensions
     {
         services.Configure<RabbitMqOptions>(configuration.GetSection(RabbitMqOptions.SectionName));
 
+        services.AddSingleton<IMessagingAccessTokenAccessor, MessagingAccessTokenAccessor>();
         services.AddSingleton<IMarketplaceEventPublisher, RabbitMqEventPublisher>();
         services.AddScoped<ReservaSolicitadaHandler>();
 

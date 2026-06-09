@@ -1,3 +1,5 @@
+using RabbitMQ.Client;
+
 namespace Microservicio.Vuelos.Api.Messaging.Options;
 
 public class RabbitMqOptions
@@ -16,6 +18,8 @@ public class RabbitMqOptions
 
     public string VirtualHost { get; set; } = "vuelos-marketplace";
 
+    public bool UseSsl { get; set; }
+
     public string ExchangeName { get; set; } = "vuelos.marketplace.events";
 
     public string VueloSeleccionadoQueue { get; set; } = "reservas.vuelo-seleccionado.queue";
@@ -25,4 +29,27 @@ public class RabbitMqOptions
     public int PreReservaMinutos { get; set; } = 15;
 
     public ushort PrefetchCount { get; set; } = 1;
+
+    public ConnectionFactory CreateConnectionFactory()
+    {
+        var factory = new ConnectionFactory
+        {
+            HostName = HostName,
+            Port = Port,
+            UserName = UserName,
+            Password = Password,
+            VirtualHost = VirtualHost
+        };
+
+        if (UseSsl)
+        {
+            factory.Ssl = new SslOption
+            {
+                Enabled = true,
+                ServerName = HostName
+            };
+        }
+
+        return factory;
+    }
 }

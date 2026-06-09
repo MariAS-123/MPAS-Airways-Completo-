@@ -87,14 +87,7 @@ public sealed class RabbitMqEventPublisher : IMarketplaceEventPublisher, IAsyncD
                 _connection = null;
             }
 
-            var factory = new ConnectionFactory
-            {
-                HostName = _options.HostName,
-                Port = _options.Port,
-                UserName = _options.UserName,
-                Password = _options.Password,
-                VirtualHost = _options.VirtualHost
-            };
+            var factory = _options.CreateConnectionFactory();
 
             _connection = await factory.CreateConnectionAsync(cancellationToken);
             _channel = await _connection.CreateChannelAsync(cancellationToken: cancellationToken);

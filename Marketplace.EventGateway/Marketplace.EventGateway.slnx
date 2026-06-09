@@ -1,0 +1,5 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="Marketplace.EventGateway.Api/Marketplace.EventGateway.Api.csproj" />
+  </Folder>
+</Solution>

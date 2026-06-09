@@ -1,4 +1,5 @@
 using Marketplace.Events.Contracts.Events;
+using Microservicio.ReservasF.Api.Messaging;
 using Microservicio.ReservasF.Api.Messaging.Mapping;
 using Microservicio.ReservasF.Api.Messaging.Publishing;
 using Microservicio.ReservasF.Business.Exceptions;
@@ -10,15 +11,18 @@ public class ReservaSolicitadaHandler
 {
     private readonly IReservaService _reservaService;
     private readonly IMarketplaceEventPublisher _publisher;
+    private readonly IMessagingAccessTokenAccessor _accessTokenAccessor;
     private readonly ILogger<ReservaSolicitadaHandler> _logger;
 
     public ReservaSolicitadaHandler(
         IReservaService reservaService,
         IMarketplaceEventPublisher publisher,
+        IMessagingAccessTokenAccessor accessTokenAccessor,
         ILogger<ReservaSolicitadaHandler> logger)
     {
         _reservaService = reservaService;
         _publisher = publisher;
+        _accessTokenAccessor = accessTokenAccessor;
         _logger = logger;
     }
 
@@ -30,6 +34,8 @@ public class ReservaSolicitadaHandler
             "Procesando ReservaSolicitada correlationId={CorrelationId} messageId={MessageId}",
             message.CorrelationId,
             message.MessageId);
+
+        _accessTokenAccessor.Token = message.AccessToken;
 
         try
         {
@@ -74,6 +80,10 @@ public class ReservaSolicitadaHandler
             }, cancellationToken);
 
             return true;
+        }
+        finally
+        {
+            _accessTokenAccessor.Token = null;
         }
     }
 

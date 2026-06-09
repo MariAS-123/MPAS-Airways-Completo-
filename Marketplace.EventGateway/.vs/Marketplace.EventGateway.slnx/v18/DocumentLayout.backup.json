@@ -1,0 +1,53 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\maria\\Desktop\\6to\\Integracion de Sistemas\\RDA 2 Mari Backup Vuelos Completo\\Marketplace.EventGateway\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{0203D950-3750-AF41-2F0A-7D55FFE494AD}|Marketplace.EventGateway.Api\\Marketplace.EventGateway.Api.csproj|c:\\users\\maria\\desktop\\6to\\integracion de sistemas\\rda 2 mari backup vuelos completo\\marketplace.eventgateway\\marketplace.eventgateway.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{0203D950-3750-AF41-2F0A-7D55FFE494AD}|Marketplace.EventGateway.Api\\Marketplace.EventGateway.Api.csproj|solutionrelative:marketplace.eventgateway.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0203D950-3750-AF41-2F0A-7D55FFE494AD}|Marketplace.EventGateway.Api\\Marketplace.EventGateway.Api.csproj|c:\\users\\maria\\desktop\\6to\\integracion de sistemas\\rda 2 mari backup vuelos completo\\marketplace.eventgateway\\marketplace.eventgateway.api\\marketplace.eventgateway.api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{0203D950-3750-AF41-2F0A-7D55FFE494AD}|Marketplace.EventGateway.Api\\Marketplace.EventGateway.Api.csproj|solutionrelative:marketplace.eventgateway.api\\marketplace.eventgateway.api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\maria\\Desktop\\6to\\Integracion de Sistemas\\RDA 2 Mari Backup Vuelos Completo\\Marketplace.EventGateway\\Marketplace.EventGateway.Api\\appsettings.json",
+              "RelativeDocumentMoniker": "Marketplace.EventGateway.Api\\appsettings.json",
+              "ToolTip": "C:\\Users\\maria\\Desktop\\6to\\Integracion de Sistemas\\RDA 2 Mari Backup Vuelos Completo\\Marketplace.EventGateway\\Marketplace.EventGateway.Api\\appsettings.json",
+              "RelativeToolTip": "Marketplace.EventGateway.Api\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-06-09T00:00:02.95Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Marketplace.EventGateway.Api.csproj",
+              "DocumentMoniker": "C:\\Users\\maria\\Desktop\\6to\\Integracion de Sistemas\\RDA 2 Mari Backup Vuelos Completo\\Marketplace.EventGateway\\Marketplace.EventGateway.Api\\Marketplace.EventGateway.Api.csproj",
+              "RelativeDocumentMoniker": "Marketplace.EventGateway.Api\\Marketplace.EventGateway.Api.csproj",
+              "ToolTip": "C:\\Users\\maria\\Desktop\\6to\\Integracion de Sistemas\\RDA 2 Mari Backup Vuelos Completo\\Marketplace.EventGateway\\Marketplace.EventGateway.Api\\Marketplace.EventGateway.Api.csproj",
+              "RelativeToolTip": "Marketplace.EventGateway.Api\\Marketplace.EventGateway.Api.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-06-08T23:46:50.504Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
