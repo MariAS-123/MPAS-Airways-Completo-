@@ -24,10 +24,48 @@ public sealed class SagaStateStore
         entry.Estado = paso switch
         {
             "VUELO_SELECCIONADO" => MarketplaceSagaStatus.VueloSeleccionado,
-            "PASAJEROS_REGISTRADOS" => MarketplaceSagaStatus.PasajerosValidados,
+            "PASAJEROS_REGISTRADOS" => entry.Estado,
             "RESERVA_SOLICITADA" => MarketplaceSagaStatus.ReservaEnProceso,
             _ => entry.Estado
         };
+    }
+
+    public void MarkAsientoPreReservado(Guid correlationId, string? tokenPreReserva)
+    {
+        var entry = GetOrCreate(correlationId);
+        entry.TokenPreReserva = tokenPreReserva;
+        entry.UltimoPaso = "ASIENTO_PRE_RESERVADO";
+        entry.Estado = MarketplaceSagaStatus.AsientoPreReservado;
+        entry.ActualizadoEnUtc = DateTime.UtcNow;
+    }
+
+    public void MarkPasajerosValidados(Guid correlationId, IReadOnlyList<int> idsPasajeros)
+    {
+        var entry = GetOrCreate(correlationId);
+        entry.IdsPasajerosValidados = idsPasajeros;
+        entry.UltimoPaso = "PASAJEROS_VALIDADOS";
+        entry.Estado = MarketplaceSagaStatus.PasajerosValidados;
+        entry.ActualizadoEnUtc = DateTime.UtcNow;
+    }
+
+    public void MarkReservaCreada(Guid correlationId, int idReserva, string codigoReserva)
+    {
+        var entry = GetOrCreate(correlationId);
+        entry.IdReserva = idReserva;
+        entry.CodigoReserva = codigoReserva;
+        entry.UltimoPaso = "RESERVA_CREADA";
+        entry.Estado = MarketplaceSagaStatus.ReservaCreada;
+        entry.ActualizadoEnUtc = DateTime.UtcNow;
+    }
+
+    public void MarkRechazada(Guid correlationId, string motivo, string? codigoError = null, string? pasoFallido = null)
+    {
+        var entry = GetOrCreate(correlationId);
+        entry.Estado = MarketplaceSagaStatus.Rechazada;
+        entry.MotivoRechazo = motivo;
+        entry.CodigoError = codigoError;
+        entry.UltimoPaso = pasoFallido ?? entry.UltimoPaso;
+        entry.ActualizadoEnUtc = DateTime.UtcNow;
     }
 }
 

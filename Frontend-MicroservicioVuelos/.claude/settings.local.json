@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install *)",
+      "Bash(New-Item -ItemType File -Path \"c:\\\\Users\\\\maria\\\\FrontendProyectoMircoservicioVuelo\\\\src\\\\styles\\\\global.css\" -Force)",
+      "Bash(Out-Null)",
+      "Bash(Write-Host \"ok\")",
+      "PowerShell(New-Item -ItemType File -Path \"c:\\\\Users\\\\maria\\\\FrontendProyectoMircoservicioVuelo\\\\src\\\\styles\\\\global.css\" -Force)",
+      "PowerShell(New-Item -ItemType File -Path \"c:\\\\Users\\\\maria\\\\FrontendProyectoMircoservicioVuelo\\\\src\\\\api\\\\axios.js\" -Force)",
+      "PowerShell(New-Item -ItemType File -Path \"c:\\\\Users\\\\maria\\\\FrontendProyectoMircoservicioVuelo\\\\src\\\\stores\\\\autenticacion.store.js\" -Force)",
+      "PowerShell(New-Item -ItemType File -Path \"c:\\\\Users\\\\maria\\\\FrontendProyectoMircoservicioVuelo\\\\src\\\\utils\\\\permisos.js\" -Force)",
+      "PowerShell(New-Item -ItemType Directory -Path \"c:\\\\Users\\\\maria\\\\FrontendProyectoMircoservicioVuelo\\\\src\\\\layouts\" -Force)",
+      "PowerShell(New-Item -ItemType Directory -Path \"c:\\\\Users\\\\maria\\\\FrontendProyectoMircoservicioVuelo\\\\src\\\\views\\\\publico\" -Force)",
+      "PowerShell(New-Item -ItemType File -Path \"C:\\\\Users\\\\maria\\\\.claude\\\\projects\\\\c--Users-maria-FrontendProyectoMircoservicioVuelo\\\\memory\\\\MEMORY.md\" -Force)",
+      "PowerShell(New-Item -ItemType File -Path \"C:\\\\Users\\\\maria\\\\.claude\\\\projects\\\\c--Users-maria-FrontendProyectoMircoservicioVuelo\\\\memory\\\\project_mpas.md\" -Force)",
+      "Bash(timeout 14 npm run dev)"
+    ]
+  }
+}

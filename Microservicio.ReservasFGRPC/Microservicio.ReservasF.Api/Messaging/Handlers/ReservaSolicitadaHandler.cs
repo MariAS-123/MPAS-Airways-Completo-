@@ -2,6 +2,7 @@ using Marketplace.Events.Contracts.Events;
 using Microservicio.ReservasF.Api.Messaging;
 using Microservicio.ReservasF.Api.Messaging.Mapping;
 using Microservicio.ReservasF.Api.Messaging.Publishing;
+using Microservicio.ReservasF.Business.DTOs.Reserva;
 using Microservicio.ReservasF.Business.Exceptions;
 using Microservicio.ReservasF.Business.Interfaces;
 
@@ -42,20 +43,39 @@ public class ReservaSolicitadaHandler
             var request = ReservaSolicitadaMapper.ToRequestDto(message);
             var created = await _reservaService.CreateAsync(request, message.CreadoPorUsuario);
 
+            var equipajePagar = ReservaEquipajeMapper.ToPagarEquipaje(message.Equipaje, created.Detalles);
+            var (idCliente, rol) = MessagingJwtClaims.Parse(message.AccessToken, message.IdCliente);
+
+            var pagado = await _reservaService.PagarAsync(
+                created.IdReserva,
+                new ReservaPagarRequestDto
+                {
+                    CargoServicio = message.CargoServicio,
+                    Equipaje = equipajePagar
+                },
+                message.CreadoPorUsuario,
+                idCliente,
+                rol);
+
+            if (pagado is null)
+                throw new BusinessException("No se pudo completar el pago de la reserva.");
+
             await _publisher.PublishAsync(new ReservaCreadaEvent
             {
                 CorrelationId = message.CorrelationId,
-                IdReserva = created.IdReserva,
-                CodigoReserva = created.CodigoReserva,
-                EstadoReserva = created.EstadoReserva,
+                IdReserva = pagado.Reserva.IdReserva,
+                CodigoReserva = pagado.Reserva.CodigoReserva,
+                EstadoReserva = pagado.Reserva.EstadoReserva,
                 IdCliente = created.IdCliente,
-                IdVuelo = created.IdVuelo
+                IdVuelo = created.IdVuelo,
+                EquipajesRegistrados = pagado.Equipajes.Count
             }, cancellationToken);
 
             _logger.LogInformation(
-                "Reserva creada vía mensaje id={IdReserva} codigo={CodigoReserva}",
-                created.IdReserva,
-                created.CodigoReserva);
+                "Reserva creada y pagada vía mensaje id={IdReserva} codigo={CodigoReserva} equipajes={Equipajes}",
+                pagado.Reserva.IdReserva,
+                pagado.Reserva.CodigoReserva,
+                pagado.Equipajes.Count);
 
             return true;
         }
@@ -93,6 +113,8 @@ public class ReservaSolicitadaHandler
             ValidationException => ("VALIDATION_ERROR", "CREAR_RESERVA"),
             NotFoundException => ("NOT_FOUND", "CREAR_RESERVA"),
             UnauthorizedBusinessException => ("UNAUTHORIZED", "CREAR_RESERVA"),
+            BusinessException business when business.Message.Contains("pago", StringComparison.OrdinalIgnoreCase)
+                => ("BUSINESS_RULE", "PAGAR_RESERVA"),
             BusinessException => ("BUSINESS_RULE", "CREAR_RESERVA"),
             _ => ("INTERNAL_ERROR", "CREAR_RESERVA")
         };

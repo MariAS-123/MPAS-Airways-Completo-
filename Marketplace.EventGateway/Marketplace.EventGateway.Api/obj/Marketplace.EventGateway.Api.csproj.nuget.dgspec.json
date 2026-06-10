@@ -502,14 +502,14 @@
         }
       }
     },
-    "C:\\Users\\maria\\Desktop\\6to\\Integracion de Sistemas\\RDA 2 Mari Backup Vuelos Completo\\Marketplace.Events.Contracts\\Marketplace.Events.Contracts.csproj": {
+    "c:\\Users\\maria\\Desktop\\6to\\Integracion de Sistemas\\RDA 2 Mari Backup Vuelos Completo\\Marketplace.Events.Contracts\\Marketplace.Events.Contracts.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\maria\\Desktop\\6to\\Integracion de Sistemas\\RDA 2 Mari Backup Vuelos Completo\\Marketplace.Events.Contracts\\Marketplace.Events.Contracts.csproj",
+        "projectUniqueName": "c:\\Users\\maria\\Desktop\\6to\\Integracion de Sistemas\\RDA 2 Mari Backup Vuelos Completo\\Marketplace.Events.Contracts\\Marketplace.Events.Contracts.csproj",
         "projectName": "Marketplace.Events.Contracts",
-        "projectPath": "C:\\Users\\maria\\Desktop\\6to\\Integracion de Sistemas\\RDA 2 Mari Backup Vuelos Completo\\Marketplace.Events.Contracts\\Marketplace.Events.Contracts.csproj",
+        "projectPath": "c:\\Users\\maria\\Desktop\\6to\\Integracion de Sistemas\\RDA 2 Mari Backup Vuelos Completo\\Marketplace.Events.Contracts\\Marketplace.Events.Contracts.csproj",
         "packagesPath": "C:\\Users\\maria\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\maria\\Desktop\\6to\\Integracion de Sistemas\\RDA 2 Mari Backup Vuelos Completo\\Marketplace.Events.Contracts\\obj\\",
+        "outputPath": "c:\\Users\\maria\\Desktop\\6to\\Integracion de Sistemas\\RDA 2 Mari Backup Vuelos Completo\\Marketplace.Events.Contracts\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

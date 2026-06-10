@@ -19,6 +19,10 @@ public record ReservaSolicitadaEvent : MarketplaceEvent
     public string? Observaciones { get; init; }
     public string OrigenCanalReserva { get; init; } = "MARKETPLACE";
     public IReadOnlyList<ReservaDetallePayload> Detalles { get; init; } = [];
+    /// <summary>
+    /// Equipaje por pasajero (MANO/BODEGA). Lista vacía = sin registros en ventas.equipaje.
+    /// </summary>
+    public IReadOnlyList<EquipajePayload> Equipaje { get; init; } = [];
     public string? TokenPreReserva { get; init; }
     public string CreadoPorUsuario { get; init; } = "marketplace-gateway";
 }

@@ -1,6 +1,8 @@
 using Marketplace.Events.Contracts.Events;
 using Microservicio.Clientes.Api.Messaging.Mapping;
 using Microservicio.Clientes.Api.Messaging.Publishing;
+using Microservicio.Clientes.Business.DTOs.Pasajero;
+using Microservicio.Clientes.Business.Exceptions;
 using Microservicio.Clientes.Business.Interfaces;
 
 namespace Microservicio.Clientes.Api.Messaging.Handlers;
@@ -83,8 +85,23 @@ public class PasajerosRegistradosHandler
                 }
 
                 var request = PasajeroPayloadMapper.ToRequestDto(pasajero, message.IdCliente);
-                var creado = await _pasajeroService.CreateAsync(request, MarketplaceUsuario);
-                idsValidados.Add(creado.IdPasajero);
+                try
+                {
+                    var creado = await _pasajeroService.CreateAsync(request, MarketplaceUsuario);
+                    idsValidados.Add(creado.IdPasajero);
+                }
+                catch (BusinessException ex) when (ex.Message.Contains("Ya existe un pasajero", StringComparison.OrdinalIgnoreCase))
+                {
+                    var existente = await BuscarPasajeroPorDocumentoAsync(
+                        message.IdCliente,
+                        pasajero.TipoDocumentoPasajero,
+                        pasajero.NumeroDocumentoPasajero);
+
+                    if (existente is null)
+                        throw;
+
+                    idsValidados.Add(existente.IdPasajero);
+                }
             }
 
             await _publisher.PublishAsync(new PasajerosValidadosEvent
@@ -112,6 +129,23 @@ public class PasajerosRegistradosHandler
             await PublishInvalidAsync(message, ex.Message, cancellationToken);
             return true;
         }
+    }
+
+    private async Task<PasajeroResponseDto?> BuscarPasajeroPorDocumentoAsync(
+        int idCliente,
+        string tipoDocumento,
+        string numeroDocumento)
+    {
+        var result = await _pasajeroService.GetPagedAsync(new PasajeroFilterDto
+        {
+            IdCliente = idCliente,
+            TipoDocumentoPasajero = tipoDocumento,
+            NumeroDocumentoPasajero = numeroDocumento,
+            Page = 1,
+            PageSize = 1,
+        });
+
+        return result.Items.FirstOrDefault();
     }
 
     private async Task PublishInvalidAsync(
