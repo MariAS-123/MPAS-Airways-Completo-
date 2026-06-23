@@ -35,6 +35,7 @@ var app = builder.Build();
 
 app.UseBusSwagger();
 app.UseCors("BusPolicy");
+app.UseMiddleware<Middleware.Microservicio.Vuelos.Api.Middleware.ExceptionHandlingMiddleware>();
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();

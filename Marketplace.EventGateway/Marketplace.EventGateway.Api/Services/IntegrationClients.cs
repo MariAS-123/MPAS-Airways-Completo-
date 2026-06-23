@@ -1,6 +1,8 @@
+using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
+using Microsoft.AspNetCore.WebUtilities;
 using Marketplace.EventGateway.Api.GraphQL;
 
 namespace Marketplace.EventGateway.Api.Services;
@@ -462,18 +464,90 @@ public sealed class ClientesPasajerosClient
                     "Clientes POST pasajeros falló status={Status} body={Body}",
                     (int)response.StatusCode,
                     raw);
-                throw new InvalidOperationException(ClientesPasajerosClientHelpers.ExtractApiMessage(raw) ?? "No se pudo registrar el pasajero.");
+
+                var apiMessage = ClientesPasajerosClientHelpers.ExtractApiMessage(raw);
+                if (response.StatusCode == HttpStatusCode.Conflict
+                    && apiMessage?.Contains("Ya existe un pasajero", StringComparison.OrdinalIgnoreCase) == true)
+                {
+                    var existenteId = await BuscarPasajeroPorDocumentoAsync(
+                        input.IdCliente,
+                        pasajero.TipoDocumentoPasajero,
+                        pasajero.NumeroDocumentoPasajero,
+                        token,
+                        cancellationToken);
+
+                    if (existenteId is not null)
+                    {
+                        ids.Add(existenteId.Value);
+                        continue;
+                    }
+                }
+
+                throw new InvalidOperationException(
+                    apiMessage ?? $"No se pudo registrar el pasajero (HTTP {(int)response.StatusCode}).");
             }
 
             using var document = JsonDocument.Parse(raw);
-            var data = document.RootElement.GetProperty("data");
-            var idPasajero = data.TryGetProperty("idPasajero", out var camel)
-                ? camel.GetInt32()
-                : data.GetProperty("id_pasajero").GetInt32();
+            var data = ClientesPasajerosClientHelpers.GetDataElement(document.RootElement);
+            var idPasajero = ClientesPasajerosClientHelpers.ExtractIdPasajero(data);
             ids.Add(idPasajero);
         }
 
         return ids;
+    }
+
+    private async Task<int?> BuscarPasajeroPorDocumentoAsync(
+        int idCliente,
+        string tipoDocumento,
+        string numeroDocumento,
+        string token,
+        CancellationToken cancellationToken)
+    {
+        var query = new Dictionary<string, string>
+        {
+            ["id_cliente"] = idCliente.ToString(),
+            ["tipo_documento_pasajero"] = tipoDocumento.Trim(),
+            ["numero_documento_pasajero"] = numeroDocumento.Trim(),
+            ["page"] = "1",
+            ["page_size"] = "1",
+        };
+
+        var url = QueryHelpers.AddQueryString("api/v1/pasajeros", query!);
+        using var request = new HttpRequestMessage(HttpMethod.Get, url);
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+        using var response = await _httpClient.SendAsync(request, cancellationToken);
+        var raw = await response.Content.ReadAsStringAsync(cancellationToken);
+        if (!response.IsSuccessStatusCode)
+        {
+            _logger.LogWarning(
+                "Clientes GET pasajeros por documento falló status={Status} body={Body}",
+                (int)response.StatusCode,
+                raw);
+            return null;
+        }
+
+        try
+        {
+            using var document = JsonDocument.Parse(raw);
+            var data = ClientesPasajerosClientHelpers.GetDataElement(document.RootElement);
+            if (!ClientesPasajerosClientHelpers.TryGetPropertyIgnoreCase(data, "items", out var items)
+                || items.ValueKind != JsonValueKind.Array)
+                return null;
+
+            foreach (var item in items.EnumerateArray())
+            {
+                var id = ClientesPasajerosClientHelpers.ExtractIdPasajero(item);
+                if (id > 0)
+                    return id;
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "No se pudo interpretar la búsqueda de pasajero por documento.");
+        }
+
+        return null;
     }
 }
 
@@ -615,16 +689,19 @@ internal static class ClientesPasajerosClientHelpers
 {
     public static string? ExtractApiMessage(string raw)
     {
+        if (string.IsNullOrWhiteSpace(raw))
+            return null;
+
         try
         {
             using var document = JsonDocument.Parse(raw);
             var root = document.RootElement;
 
             string? detail = null;
-            if (root.TryGetProperty("errors", out var errors) && errors.ValueKind == JsonValueKind.Array)
+            if (TryGetPropertyIgnoreCase(root, "errors", out var errors) && errors.ValueKind == JsonValueKind.Array)
             {
                 var parts = errors.EnumerateArray()
-                    .Select(item => item.GetString())
+                    .Select(item => item.ValueKind == JsonValueKind.String ? item.GetString() : item.ToString())
                     .Where(item => !string.IsNullOrWhiteSpace(item))
                     .ToArray();
 
@@ -632,18 +709,66 @@ internal static class ClientesPasajerosClientHelpers
                     detail = string.Join(' ', parts);
             }
 
-            var message = root.TryGetProperty("message", out var messageNode)
-                ? messageNode.GetString()
-                : null;
+            var message = TryGetStringProperty(root, "message", "Message", "title", "Title");
+            var problemDetail = TryGetStringProperty(root, "detail", "Detail");
 
             if (!string.IsNullOrWhiteSpace(message) && !string.IsNullOrWhiteSpace(detail))
                 return $"{message} {detail}";
 
-            return message ?? detail;
+            return message ?? detail ?? problemDetail;
         }
         catch
         {
             // ignore
+        }
+
+        return null;
+    }
+
+    public static JsonElement GetDataElement(JsonElement root)
+    {
+        if (TryGetPropertyIgnoreCase(root, "data", out var data))
+            return data;
+
+        return root;
+    }
+
+    public static int ExtractIdPasajero(JsonElement data)
+    {
+        foreach (var name in new[] { "idPasajero", "id_pasajero", "IdPasajero" })
+        {
+            if (TryGetPropertyIgnoreCase(data, name, out var prop) && prop.TryGetInt32(out var id))
+                return id;
+        }
+
+        throw new InvalidOperationException("La respuesta de Clientes no incluye idPasajero.");
+    }
+
+    public static bool TryGetPropertyIgnoreCase(JsonElement element, string name, out JsonElement value)
+    {
+        foreach (var property in element.EnumerateObject())
+        {
+            if (string.Equals(property.Name, name, StringComparison.OrdinalIgnoreCase))
+            {
+                value = property.Value;
+                return true;
+            }
+        }
+
+        value = default;
+        return false;
+    }
+
+    private static string? TryGetStringProperty(JsonElement element, params string[] names)
+    {
+        foreach (var name in names)
+        {
+            if (TryGetPropertyIgnoreCase(element, name, out var prop) && prop.ValueKind == JsonValueKind.String)
+            {
+                var value = prop.GetString();
+                if (!string.IsNullOrWhiteSpace(value))
+                    return value;
+            }
         }
 
         return null;

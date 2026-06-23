@@ -22,10 +22,20 @@ public class PasajeroAdminController : ControllerBase
     }
 
     [HttpGet]
-    [Authorize(Roles = "ADMINISTRADOR,AEROLINEA")]
+    [Authorize(Roles = "ADMINISTRADOR,AEROLINEA,CLIENTE")]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status200OK)]
     public async Task<ActionResult<ApiResponse<object>>> GetPaged([FromQuery] PasajeroFilterDto filter)
     {
+        if (GetRol() == "CLIENTE")
+        {
+            var idCliente = GetIdCliente();
+            if (idCliente is null)
+                return Unauthorized(ApiResponse<object>.Fail(
+                    "No se pudo identificar el cliente del token."));
+
+            filter.IdCliente = idCliente.Value;
+        }
+
         var result = await _pasajeroService.GetPagedAsync(filter);
         return Ok(ApiResponse<object>.Ok(result, "Consulta de pasajeros realizada correctamente."));
     }

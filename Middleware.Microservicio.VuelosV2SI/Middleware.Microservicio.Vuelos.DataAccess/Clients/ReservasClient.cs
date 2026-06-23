@@ -112,7 +112,7 @@ public partial class ReservasFClient : IReservasFClient
                 "[Bus->ReservasF] CrearReserva fallido. " +
                 "StatusCode={StatusCode} Body={Body}",
                 (int)response.StatusCode, body);
-            return null;
+            throw new InvalidOperationException(ExtractApiMessage(body) ?? "No se pudo crear la reserva.");
         }
 
         var apiResponse = JsonSerializer
@@ -158,7 +158,7 @@ public partial class ReservasFClient : IReservasFClient
                 "[Bus->ReservasF] PagarReserva fallido. " +
                 "StatusCode={StatusCode} IdReserva={IdReserva} Body={Body}",
                 (int)response.StatusCode, idReserva, body);
-            return null;
+            throw new InvalidOperationException(ExtractApiMessage(body) ?? "No se pudo pagar la reserva.");
         }
 
         var apiResponse = JsonSerializer
@@ -393,5 +393,38 @@ public partial class ReservasFClient : IReservasFClient
             .Deserialize<ReservasApiResponseDto<EquipajeDto>>(body, _jsonOptions);
 
         return apiResponse?.Success == true ? apiResponse.Data : null;
+    }
+
+    private static string? ExtractApiMessage(string raw)
+    {
+        try
+        {
+            using var document = JsonDocument.Parse(raw);
+            var root = document.RootElement;
+
+            if (root.TryGetProperty("message", out var message) &&
+                message.ValueKind == JsonValueKind.String &&
+                !string.IsNullOrWhiteSpace(message.GetString()))
+            {
+                var text = message.GetString()!;
+                if (root.TryGetProperty("errors", out var errors) && errors.ValueKind == JsonValueKind.Array)
+                {
+                    var details = errors.EnumerateArray()
+                        .Select(item => item.GetString())
+                        .Where(item => !string.IsNullOrWhiteSpace(item))
+                        .ToArray();
+                    if (details.Length > 0)
+                        return $"{text} {string.Join(' ', details)}";
+                }
+
+                return text;
+            }
+        }
+        catch
+        {
+            // ignore parse errors
+        }
+
+        return null;
     }
 }

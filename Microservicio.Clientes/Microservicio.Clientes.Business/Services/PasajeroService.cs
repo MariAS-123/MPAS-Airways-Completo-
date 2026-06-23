@@ -93,10 +93,17 @@ public class PasajeroService : IPasajeroService
         var numeroDocumento = request.NumeroDocumentoPasajero.Trim().ToUpperInvariant();
         var tipoDocumento = request.TipoDocumentoPasajero.Trim().ToUpperInvariant();
 
-        if (existentes.Items.Any(x =>
+        var duplicado = existentes.Items.FirstOrDefault(x =>
             x.TipoDocumentoPasajero.Trim().ToUpperInvariant() == tipoDocumento &&
-            x.NumeroDocumentoPasajero.Trim().ToUpperInvariant() == numeroDocumento))
+            x.NumeroDocumentoPasajero.Trim().ToUpperInvariant() == numeroDocumento);
+
+        if (duplicado is not null)
+        {
+            if (request.IdCliente.HasValue && duplicado.IdCliente == request.IdCliente)
+                return PasajeroBusinessMapper.ToResponseDto(duplicado);
+
             throw new BusinessException("Ya existe un pasajero con el mismo tipo y número de documento.");
+        }
 
         var dataModel = PasajeroBusinessMapper.ToDataModel(request, creadoPorUsuario);
         var creado = await _pasajeroDataService.CreateAsync(dataModel);

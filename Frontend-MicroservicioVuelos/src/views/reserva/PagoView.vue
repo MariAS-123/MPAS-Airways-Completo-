@@ -12,6 +12,7 @@ import { useAutenticacionStore } from '@/stores/autenticacion.store'
 import { useCatalogosStore } from '@/stores/catalogos.store'
 import { useReservaStore } from '@/stores/reserva.store'
 import { guardarPortalReserva } from '@/utils/portalCliente'
+import { extraerMensajeApi, mensajePagoReservaAmigable } from '@/utils/apiErrors'
 
 const router = useRouter()
 const auth = useAutenticacionStore()
@@ -795,7 +796,7 @@ async function ejecutarCompraReal() {
     router.push({ name: 'confirmacion-reserva' })
   } catch (error) {
     estadoProceso.value = ''
-    errorPago.value = error.response?.data?.message || error.message || 'No se pudo completar el pago.'
+    errorPago.value = mensajePagoReservaAmigable(extraerMensajeApi(error))
   }
 }
 
